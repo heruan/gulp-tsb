@@ -467,6 +467,12 @@ class LanguageServiceHost implements ts.LanguageServiceHost {
     getScriptFileNames(): string[] {
 
         const result: string[] = [];
+        const options = this.getCompilationSettings();
+        if (Array.isArray(options.lib)) {
+            for (let lib of options.lib) {
+                result.push("typescript/lib/lib." + lib + ".d.ts");
+            }
+        }
         const defaultLibFileName = this.getDefaultLibFileName(this.getCompilationSettings());
         for (let fileName in this._snapshots) {
             if (/\.tsx?/i.test(path.extname(fileName))
